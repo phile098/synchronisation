@@ -12,7 +12,7 @@ _\ \ |_| | | | | (__| | | (_) | | | | \__ \ (_| | |_| | (_) | | | |
 \__/\__, |_| |_|\___|_|  \___/|_| |_|_|___/\__,_|\__|_|\___/|_| |_|
     |___/                                                          
 ```
-Ce projet est un script qui permet depuis un terminal de sélectioner un dossier dans le /home/user et de le cloner sur un disque dur externe avec la meme architecture et en ajoutant un systeme de versions
+Ce projet est un script qui permet depuis un terminal de sélectioner un dossier dans le /home/user et de le cloner sur un disque dur externe avec la meme architecture et en ajoutant un systeme de versions.Crée pour fonctioner sur un terminal unix.
 ## Installation
 
 Clonez le dépôt :
