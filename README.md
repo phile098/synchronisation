@@ -29,11 +29,10 @@ chmod 777 script_syncro.py
 
 ```
 # instalation des module
+
+```bash
 pip install shutil
 pip install tqdm
-```bash
-chmod 777 script_syncro.py
-
 ```
 
 # Example 
