@@ -28,6 +28,13 @@ cd syncronisation
 chmod 777 script_syncro.py
 
 ```
+# instalation des module
+pip install shutil
+pip install tqdm
+```bash
+chmod 777 script_syncro.py
+
+```
 
 # Example 
 ![Mon image](/capture.png)
