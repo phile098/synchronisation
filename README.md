@@ -1,7 +1,10 @@
-#Syncronisateur de dossier fichier local--> disk dur externe 
+# Syncronisateur de dossier fichier local--> disk dur externe 
 ![Project Status](https://img.shields.io/badge/status-active-brightgreen)  
 ![License](https://img.shields.io/badge/license-MIT-blue)
-``
+
+
+```
+
  __                                  _           _   _             
 / _\_   _ _ __   ___ _ __ ___  _ __ (_)___  __ _| |_(_) ___  _ __  
 \ \| | | | '_ \ / __| '__/ _ \| '_ \| / __|/ _` | __| |/ _ \| '_ \ 
