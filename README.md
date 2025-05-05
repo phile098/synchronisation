@@ -1,16 +1,19 @@
-# Syncronisateur de dossier fichier local--> disk dur externe 
+# Synchronisateur de dossier fichier local--> disk dur externe 
 ![Project Status](https://img.shields.io/badge/status-active-brightgreen)  
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
 
 ```
+                       _                     _           _   _             
+                      | |                   (_)         | | (_)            
+  ___ _   _ _ __   ___| |__  _ __ ___  _ __  _ ___  __ _| |_ _  ___  _ __  
+ / __| | | | '_ \ / __| '_ \| '__/ _ \| '_ \| / __|/ _` | __| |/ _ \| '_ \ 
+ \__ \ |_| | | | | (__| | | | | | (_) | | | | \__ \ (_| | |_| | (_) | | | |
+ |___/\__, |_| |_|\___|_| |_|_|  \___/|_| |_|_|___/\__,_|\__|_|\___/|_| |_|
+       __/ |                                                               
+      |___/                                                                
 
- __                                  _           _   _             
-/ _\_   _ _ __   ___ _ __ ___  _ __ (_)___  __ _| |_(_) ___  _ __  
-\ \| | | | '_ \ / __| '__/ _ \| '_ \| / __|/ _` | __| |/ _ \| '_ \ 
-_\ \ |_| | | | | (__| | | (_) | | | | \__ \ (_| | |_| | (_) | | | |
-\__/\__, |_| |_|\___|_|  \___/|_| |_|_|___/\__,_|\__|_|\___/|_| |_|
-    |___/                                                          
+                                                    
 ```
 Ce projet est un script qui permet depuis un terminal de sélectioner un dossier dans le /home/user et de le cloner sur un disque dur externe avec la meme architecture et en ajoutant un systeme de versions.Crée pour fonctioner sur un terminal unix.
 ## Installation
@@ -18,8 +21,8 @@ Ce projet est un script qui permet depuis un terminal de sélectioner un dossier
 Clonez le dépôt :
 
 ```bash
-git clone https://github.com/phile098/syncronisation.git
-cd syncronisation
+git clone https://github.com/phile098/synchronisation.git
+cd synchonisation
 
 ```
 # Droit d'execution
