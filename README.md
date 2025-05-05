@@ -39,4 +39,4 @@ pip install tqdm
 ```
 
 # Example 
-![Mon image](/capture.png)
+![Mon image](/script.png)
