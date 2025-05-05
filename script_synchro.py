@@ -19,12 +19,15 @@ print(datetime.now().strftime("%Y%'-'m-%d-%H%-M%-S"))
 def presentation():
 
     print(r'''
- __                                  _           _   _             
-/ _\_   _ _ __   ___ _ __ ___  _ __ (_)___  __ _| |_(_) ___  _ __  
-\ \| | | | '_ \ / __| '__/ _ \| '_ \| / __|/ _` | __| |/ _ \| '_ \ 
-_\ \ |_| | | | | (__| | | (_) | | | | \__ \ (_| | |_| | (_) | | | |
-\__/\__, |_| |_|\___|_|  \___/|_| |_|_|___/\__,_|\__|_|\___/|_| |_|
-    |___/                                                          
+                       _                     _           _   _             
+                      | |                   (_)         | | (_)            
+  ___ _   _ _ __   ___| |__  _ __ ___  _ __  _ ___  __ _| |_ _  ___  _ __  
+ / __| | | | '_ \ / __| '_ \| '__/ _ \| '_ \| / __|/ _` | __| |/ _ \| '_ \ 
+ \__ \ |_| | | | | (__| | | | | | (_) | | | | \__ \ (_| | |_| | (_) | | | |
+ |___/\__, |_| |_|\___|_| |_|_|  \___/|_| |_|_|___/\__,_|\__|_|\___/|_| |_|
+       __/ |                                                               
+      |___/                                                                
+
 
 
 ************************************************************
@@ -112,11 +115,22 @@ def syncronisation(destination,pc):
                     if not os.path.exists(chemin_source):
                         pbar.update(1)
                         continue
-                    if not fichier_identique(chemin_source, chemin_dest):
-                        shutil.copy2(chemin_source, chemin_dest)
-                    elif fichier_identique(chemin_source, chemin_dest)=='novelversion':
+                    a=fichier_identique(chemin_source, chemin_dest)
+                    if a==False:
+                        try:
+                            shutil.copy2(chemin_source, chemin_dest)
+                        except FileNotFoundError:
+                            print(f"Le fichier {chemin_source} n'existe pas.")
+                            pbar.update(1)
+                            continue
+                    elif a=='novelversion':
                         horodatage =datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-                        shutil.copy2(chemin_source, chemin_dest+'_v-'+horodatage)
+                        try:
+                            shutil.copy2(chemin_source, chemin_dest+'_v-'+horodatage)
+                        except FileNotFoundError:
+                            print(f"Le fichier {chemin_source} n'existe pas.")
+                            pbar.update(1)
+                            continue
                     pbar.update(1)
 
 
