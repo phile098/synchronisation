@@ -32,7 +32,7 @@ _\ \ |_| | | | | (__| | | (_) | | | | \__ \ (_| | |_| | (_) | | | |
 ************************************************************
 *** Auteur  : phile098                                   ***
 *** Version : 1.0                                        ***
-*** Git :https://github.com/phile098/syncronisation.git  ***
+*** Git :https://github.com/phile098/synchronisation.git  ***
 *** Description :                                        ***
 *** Ce programme permet de synchroniser un dossier       ***
 *** de votre machine vers un disque externe,             ***
