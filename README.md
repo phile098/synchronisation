@@ -22,13 +22,13 @@ Clonez le dépôt :
 
 ```bash
 git clone https://github.com/phile098/synchronisation.git
-cd synchonisation
+cd synchronisation
 
 ```
 # Droit d'execution
 
 ```bash
-chmod 777 script_syncro.py
+chmod 777 script_synchro.py
 
 ```
 # instalation des module
