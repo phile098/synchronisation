@@ -1,21 +1,46 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import os
+import argparse
 import shutil
 import psutil
 from datetime import datetime
 from tqdm import tqdm
 import re
 import sys
-import sys
+import os
+
+def parse_arguments():
+    parser = argparse.ArgumentParser(
+        description="Script de synchronisation de dossiers avec versionnage"
+    )
+
+    parser.add_argument(
+        '--source', '-s', type=str,
+        help="Chemin du dossier source à synchroniser"
+    )
+
+    parser.add_argument(
+        '--destination', '-d', type=str,
+        help="Chemin du disque ou dossier destination"
+    )
+
+    parser.add_argument(
+        '--interactive', '-i', action='store_true',
+        help="Active le mode interactif pour choisir les dossiers"
+    )
 
 
+    parser.add_argument(
+        '--version', action='version', version='%(prog)s 1.0',
+        help="Affiche la version du programme"
+    )
+
+    return parser.parse_args()
 def nettoyer_nom_fichier(nom):
     """
     Remplace les caractères non valides dans un nom de fichier par un underscore (_).
     """
     return re.sub(r'[<>:"/\\|?*]', '_', nom)  # Remplace les caractères interdits par "_"
-print(datetime.now().strftime("%Y%'-'m-%d-%H%-M%-S"))
 def presentation():
 
     print(r'''
@@ -57,18 +82,28 @@ def est_entier(valeur):
         return True  
     except ValueError:
         return False  
+def erreur_chiffre(x,taille):
+    try:
+        if x < 0 or x >taille:
+            raise ValueError
+    except ValueError:
+        print("Erreur : le chiffre doit être compris entre 0 et", taille)
+        exit()
 def liste_dossier():
     chemin=os.getcwd()
     listedossier=os.listdir(chemin)
+    # print(listedossier)
     print("Voici la liste des dossiers existants :")
     for i  in range(len(listedossier)):
         if os.path.isdir(listedossier[i]):
             print(i,':',listedossier[i])
-    dossier =int(input("Entrez le chiffre associer dossier à syncroniser sur le disk de la machine : "))
+    dossier =(input("Entrez le chiffre associer dossier à syncroniser sur le disk de la machine : "))
     if est_entier(dossier)==False:
         print("Ce n'est pas un chiffre")
         exit()
-    return os.path.join(chemin, listedossier[dossier])
+    erreur_chiffre(int(dossier),len(listedossier)-1)
+
+    return os.path.join(chemin, listedossier[int(dossier)])
 def chemin_disque():
     chemindisque=[]
     cpt=-1
@@ -80,10 +115,12 @@ def chemin_disque():
 
             print(cpt,':',partiton.mountpoint)
 
-    diskchoisi=int(input('Entrez le chiffre associer disk :'))
+    diskchoisi=(input('Entrez le chiffre associer disk :'))
     if est_entier(diskchoisi)==False:
         print("Ce n'est pas un chiffre")
         exit()
+    erreur_chiffre(int(diskchoisi),cpt)
+
     return chemindisque[int(diskchoisi)]
 def fichier_identique(f1,f2):
     if os.path.exists(f1) and os.path.exists(f2):
@@ -94,21 +131,21 @@ def fichier_identique(f1,f2):
             return True
         
     return False
-def syncronisation(destination,pc):
+def synchronisation(destination,source):
    
     destination=os.path.join(destination, 'synchronisation')
     if not os.path.exists(destination):
         os.makedirs(destination)
-    total_fichiers = sum(len(files) for _, _, files in os.walk(pc))
+    total_fichiers = sum(len(files) for _, _, files in os.walk(source))
     with tqdm(total=total_fichiers,desc="Synchronisation des fichiers",unit="fichier",dynamic_ncols=True,leave=True,file=sys.stdout,ascii=True,disable=False) as pbar:
-        for racine, _, dossier in os.walk(pc):
+        for racine, _, dossier in os.walk(source):
             if racine.startswith(os.path.expanduser("~")):
                 for fichier in dossier:
                     chemin_source = os.path.join(racine, fichier)
                     
-                    chemin_relatif = os.path.relpath(chemin_source, pc)
+                    chemin_relatif = os.path.relpath(chemin_source, source)
 
-                    chemin_dest = os.path.join(destination, chemin_relatif)
+                    chemin_dest = os.path.join(destination, os.path.dirname(chemin_relatif),nettoyer_nom_fichier(os.path.basename(chemin_source)))
 
                     os.makedirs(os.path.dirname(chemin_dest), exist_ok=True)
 
@@ -135,10 +172,22 @@ def syncronisation(destination,pc):
 
 
 def main():
+    args = parse_arguments()
     presentation()
-    dossier=liste_dossier()
-    chemin_disk=chemin_disque()
-    syncronisation(chemin_disk,dossier)
+
+    if args.interactive:
+        source = liste_dossier()
+        destination = chemin_disque()
+        synchronisation(destination,source)
+
+    else: 
+        if args.source is None or args.destination is None:
+            print("Erreur : les arguments --source et --destination sont obligatoires.")
+            sys.exit(1)
+        source = args.source
+        destination = args.destination  
+
+        synchronisation(destination,source)
     
 
 main()
