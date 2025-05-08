@@ -53,6 +53,7 @@ python3 chemin_du_script/script_syncro.py --source /chemin_du_dossier_a_synchro 
 # Utilisation interactive
 ```bash
 python3 chemin_du_script/script_syncro.py --interactive
+```
 
 # Example 
 ![Mon image](/script.png)
