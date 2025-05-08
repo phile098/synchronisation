@@ -36,7 +36,23 @@ chmod 777 script_synchro.py
 ```bash
 pip install shutil
 pip install tqdm
+
 ```
+# Argument argparse 
+```bash
+--interactive
+--source
+--destination
+--version
+```
+# Utilisation en ligne direct dans le terminal 
+
+```bash
+python3 chemin_du_script/script_syncro.py --source /chemin_du_dossier_a_synchro --destination /chemin_du_disk_externe
+```
+# Utilisation interactive
+```bash
+python3 chemin_du_script/script_syncro.py --interactive
 
 # Example 
 ![Mon image](/script.png)
