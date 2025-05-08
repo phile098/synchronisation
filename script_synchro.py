@@ -136,6 +136,12 @@ def synchronisation(destination,source):
     destination=os.path.join(destination, 'synchronisation')
     if not os.path.exists(destination):
         os.makedirs(destination)
+    dossier_final = os.path.basename(os.path.normpath(source))
+    destination= os.path.join(destination,  dossier_final)
+    if not os.path.exists(destination):
+
+            os.makedirs(destination, exist_ok=True)
+
     total_fichiers = sum(len(files) for _, _, files in os.walk(source))
     with tqdm(total=total_fichiers,desc="Synchronisation des fichiers",unit="fichier",dynamic_ncols=True,leave=True,file=sys.stdout,ascii=True,disable=False) as pbar:
         for racine, _, dossier in os.walk(source):
