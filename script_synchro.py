@@ -38,9 +38,17 @@ def parse_arguments():
     return parser.parse_args()
 def nettoyer_nom_fichier(nom):
     """
-    Remplace les caractères non valides dans un nom de fichier par un underscore (_).
+    Nettoie un nom de fichier/dossier :
+    - supprime les caractères illégaux,
+    - remplace les points consécutifs,
+    - supprime les espaces et points en début/fin.
     """
-    return re.sub(r'[<>:"/\\|?*]', '_', nom)  # Remplace les caractères interdits par "_"
+    nom = re.sub(r'[<>:"/\\|?*]', '_', nom)  # caractères interdits
+    nom = re.sub(r'\.{2,}', '.', nom)        # remplace plusieurs points consécutifs
+    nom = nom.strip(' .')                    # supprime espaces et points début/fin
+
+
+    return nom
 def presentation():
 
     print(r'''
@@ -150,8 +158,11 @@ def synchronisation(destination,source):
                     chemin_source = os.path.join(racine, fichier)
                     
                     chemin_relatif = os.path.relpath(chemin_source, source)
+                    parties = chemin_relatif.split(os.sep)
+                    parties_nettoyees = [nettoyer_nom_fichier(partie) for partie in parties]
+                    chemin_relatif_nettoye = os.path.join(*parties_nettoyees)
 
-                    chemin_dest = os.path.join(destination, os.path.dirname(chemin_relatif),nettoyer_nom_fichier(os.path.basename(chemin_source)))
+                    chemin_dest = os.path.join(destination, chemin_relatif_nettoye)
 
                     os.makedirs(os.path.dirname(chemin_dest), exist_ok=True)
 
