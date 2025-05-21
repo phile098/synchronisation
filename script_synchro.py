@@ -8,7 +8,7 @@ from tqdm import tqdm
 import re
 import sys
 import os
-
+import time
 def parse_arguments():
     parser = argparse.ArgumentParser(
         description="Script de synchronisation de dossiers avec versionnage"
@@ -68,7 +68,7 @@ def presentation():
 ************************************************************
 *** Auteur  : phile098                                   ***
 *** Version : 1.0                                        ***
-*** Git :https://github.com/phile098/synchronisation.git  ***
+*** Git :https://github.com/phile098/synchronisation.git ***
 *** Description :                                        ***
 *** Ce programme permet de synchroniser un dossier       ***
 *** de votre machine vers un disque externe,             ***
@@ -89,7 +89,8 @@ def est_entier(valeur):
         int(valeur) 
         return True  
     except ValueError:
-        return False  
+        print("Ce n'est pas un chiffre")
+        exit()
 def erreur_chiffre(x,taille):
     try:
         if x < 0 or x >taille:
@@ -98,18 +99,18 @@ def erreur_chiffre(x,taille):
         print("Erreur : le chiffre doit être compris entre 0 et", taille)
         exit()
 def liste_dossier():
+    
     chemin=os.getcwd()
     listedossier=os.listdir(chemin)
-    # print(listedossier)
+    taille=len(listedossier)
     print("Voici la liste des dossiers existants :")
-    for i  in range(len(listedossier)):
+    for i  in range(taille):
         if os.path.isdir(listedossier[i]):
             print(i,':',listedossier[i])
     dossier =(input("Entrez le chiffre associer dossier à syncroniser sur le disk de la machine : "))
-    if est_entier(dossier)==False:
-        print("Ce n'est pas un chiffre")
-        exit()
-    erreur_chiffre(int(dossier),len(listedossier)-1)
+    est_entier(dossier)
+
+    erreur_chiffre(int(dossier),taille-1)
 
     return os.path.join(chemin, listedossier[int(dossier)])
 def chemin_disque():
@@ -120,13 +121,10 @@ def chemin_disque():
         if partiton.mountpoint.startswith('/media/'):
             cpt+=1
             chemindisque.append(partiton.mountpoint)
-
             print(cpt,':',partiton.mountpoint)
 
     diskchoisi=(input('Entrez le chiffre associer disk :'))
-    if est_entier(diskchoisi)==False:
-        print("Ce n'est pas un chiffre")
-        exit()
+    est_entier(diskchoisi)
     erreur_chiffre(int(diskchoisi),cpt)
 
     return chemindisque[int(diskchoisi)]
@@ -193,18 +191,24 @@ def main():
     presentation()
 
     if args.interactive:
+        temp=time.time()
         source = liste_dossier()
         destination = chemin_disque()
         synchronisation(destination,source)
-
+        temps_ecoule = time.time() - temp
+        print(temps_ecoule)
     else: 
         if args.source is None or args.destination is None:
             print("Erreur : les arguments --source et --destination sont obligatoires.")
             sys.exit(1)
         source = args.source
         destination = args.destination  
+        temp=time.time()
+   
+
 
         synchronisation(destination,source)
-    
 
+        temps_ecoule = time.time() - temp
+        print(temps_ecoule)
 main()
