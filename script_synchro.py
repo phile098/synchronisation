@@ -151,39 +151,39 @@ def synchronisation(destination,source):
     total_fichiers = sum(len(files) for _, _, files in os.walk(source))
     with tqdm(total=total_fichiers,desc="Synchronisation des fichiers",unit="fichier",dynamic_ncols=True,leave=True,file=sys.stdout,ascii=True,disable=False) as pbar:
         for racine, _, dossier in os.walk(source):
-            if racine.startswith(os.path.expanduser("~")):
-                for fichier in dossier:
-                    chemin_source = os.path.join(racine, fichier)
-                    
-                    chemin_relatif = os.path.relpath(chemin_source, source)
-                    parties = chemin_relatif.split(os.sep)
-                    parties_nettoyees = [nettoyer_nom_fichier(partie) for partie in parties]
-                    chemin_relatif_nettoye = os.path.join(*parties_nettoyees)
+            # if racine.startswith(os.path.expanduser("~")):
+            for fichier in dossier:
+                chemin_source = os.path.join(racine, fichier)
+                
+                chemin_relatif = os.path.relpath(chemin_source, source)
+                parties = chemin_relatif.split(os.sep)
+                parties_nettoyees = [nettoyer_nom_fichier(partie) for partie in parties]
+                chemin_relatif_nettoye = os.path.join(*parties_nettoyees)
 
-                    chemin_dest = os.path.join(destination, chemin_relatif_nettoye)
+                chemin_dest = os.path.join(destination, chemin_relatif_nettoye)
 
-                    os.makedirs(os.path.dirname(chemin_dest), exist_ok=True)
+                os.makedirs(os.path.dirname(chemin_dest), exist_ok=True)
 
-                    if not os.path.exists(chemin_source):
+                if not os.path.exists(chemin_source):
+                    pbar.update(1)
+                    continue
+                a=fichier_identique(chemin_source, chemin_dest)
+                if a==False:
+                    try:
+                        shutil.copy2(chemin_source, chemin_dest)
+                    except FileNotFoundError:
+                        print(f"Le fichier {chemin_source} n'existe pas.")
                         pbar.update(1)
                         continue
-                    a=fichier_identique(chemin_source, chemin_dest)
-                    if a==False:
-                        try:
-                            shutil.copy2(chemin_source, chemin_dest)
-                        except FileNotFoundError:
-                            print(f"Le fichier {chemin_source} n'existe pas.")
-                            pbar.update(1)
-                            continue
-                    elif a=='novelversion':
-                        horodatage =datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-                        try:
-                            shutil.copy2(chemin_source, chemin_dest+'_v-'+horodatage)
-                        except FileNotFoundError:
-                            print(f"Le fichier {chemin_source} n'existe pas.")
-                            pbar.update(1)
-                            continue
-                    pbar.update(1)
+                elif a=='novelversion':
+                    horodatage =datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+                    try:
+                        shutil.copy2(chemin_source, chemin_dest+'_v-'+horodatage)
+                    except FileNotFoundError:
+                        print(f"Le fichier {chemin_source} n'existe pas.")
+                        pbar.update(1)
+                        continue
+                pbar.update(1)
 
 
 def main():
